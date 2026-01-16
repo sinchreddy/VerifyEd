@@ -68,6 +68,7 @@
    - Once fully integrated, only relevant and non-predatory opportunities will appear
 
 ## Folder Structure
+<pre>
 Verifyed/
 ├── app.py                 # Main Flask app
 ├── fetch_opportunities.py # Script to fetch hackathons and conferences
@@ -82,6 +83,7 @@ Verifyed/
 │   ├── dashboard.html
 │   └── dashboard_select.html      # Optional student selection page
 └── README.md
+</pre>
 
 ## How to Run
 1. Clone the repository
