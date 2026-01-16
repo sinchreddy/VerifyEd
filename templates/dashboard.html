@@ -1,47 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Dashboard - VerifyEd</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<meta charset="UTF-8">
+<title>VerifyEd | Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+
+/* ===== BACKGROUND ===== */
+body{
+min-height:100vh;
+background:
+radial-gradient(circle at 20% 20%, rgba(0,198,255,0.15), transparent 40%),
+radial-gradient(circle at 80% 80%, rgba(0,114,255,0.15), transparent 40%),
+linear-gradient(135deg,#070b14,#0d1220,#11172a);
+color:#fff;
+padding:30px;
+}
+
+/* ===== HEADER ===== */
+.header{
+display:flex;
+flex-direction:column;
+align-items:center;
+margin-bottom:40px;
+}
+
+.header h1{
+font-size:48px;
+font-weight:800;
+letter-spacing:-1px;
+}
+.header h1 span{
+background:linear-gradient(135deg,#00e0ff,#0072ff);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.header p{
+margin-top:8px;
+font-size:18px;
+color:#b6e9ff;
+opacity:.9;
+}
+
+/* ===== GLASS CARD ===== */
+.glass{
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(30px);
+border:1px solid rgba(255,255,255,0.18);
+border-radius:28px;
+padding:32px;
+box-shadow:
+0 40px 90px rgba(0,0,0,.85),
+inset 0 0 0 rgba(255,255,255,0.2);
+margin-bottom:30px;
+}
+
+/* ===== PROFILE ===== */
+.profile{
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+gap:20px;
+}
+
+.profile h2{
+font-size:32px;
+font-weight:700;
+}
+
+.profile p{
+margin-top:6px;
+color:#c9eaff;
+font-size:16px;
+}
+
+/* ===== STATS ===== */
+.stats{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.stat{
+min-width:160px;
+padding:18px 22px;
+border-radius:20px;
+background:linear-gradient(135deg,rgba(0,198,255,.2),rgba(0,114,255,.2));
+border:1px solid rgba(0,198,255,.4);
+box-shadow:0 12px 35px rgba(0,0,0,.5);
+}
+
+.stat h3{
+font-size:26px;
+font-weight:700;
+}
+
+.stat span{
+font-size:13px;
+opacity:.85;
+}
+
+/* ===== SECTION TITLE ===== */
+.section-title{
+font-size:28px;
+font-weight:700;
+margin-bottom:20px;
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.section-title::before{
+content:"";
+width:8px;
+height:28px;
+border-radius:4px;
+background:linear-gradient(180deg,#00e0ff,#0072ff);
+}
+
+/* ===== TABLE ===== */
+.table-wrapper{
+overflow-x:auto;
+}
+
+table{
+width:100%;
+border-collapse:separate;
+border-spacing:0 14px;
+}
+
+thead th{
+padding:14px;
+text-transform:uppercase;
+font-size:12px;
+letter-spacing:1px;
+color:#8fdcff;
+opacity:.8;
+}
+
+tbody tr{
+background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.04));
+border-radius:18px;
+transition:.35s;
+}
+
+tbody tr:hover{
+transform:translateY(-4px) scale(1.01);
+background:linear-gradient(135deg,rgba(0,198,255,.25),rgba(0,114,255,.15));
+box-shadow:0 25px 60px rgba(0,0,0,.7);
+}
+
+tbody td{
+padding:16px;
+font-size:15px;
+color:#eaf8ff;
+}
+
+tbody tr td:first-child{border-radius:18px 0 0 18px}
+tbody tr td:last-child{border-radius:0 18px 18px 0}
+
+/* ===== MATCH SCORE ===== */
+.score{
+padding:8px 14px;
+border-radius:14px;
+font-weight:700;
+font-size:14px;
+background:linear-gradient(135deg,#00e0ff,#0072ff);
+color:#000;
+box-shadow:0 6px 18px rgba(0,0,0,.4);
+}
+
+/* ===== EMPTY STATE ===== */
+.empty{
+text-align:center;
+padding:40px;
+font-size:18px;
+color:#b6e9ff;
+opacity:.9;
+}
+
+/* ===== FOOTER ===== */
+footer{
+margin-top:40px;
+text-align:center;
+font-size:14px;
+opacity:.65;
+}
+footer span{color:#00e0ff}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+.profile{flex-direction:column;align-items:flex-start}
+.header h1{font-size:38px}
+}
+</style>
 </head>
-<body class="bg-light">
 
-<div class="container mt-5">
-    <h2>Welcome, {{ student.name }}</h2>
-    <p>Branch: {{ student.branch }} | Degree: {{ student.degree }} | Year: {{ student.year }}</p>
+<body>
 
-    <h3 class="mt-4">Matched Opportunities</h3>
-    {% if opportunities %}
-        <table class="table table-striped mt-3">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Type</th>
-                    <th>Organizer</th>
-                    <th>Domains</th>
-                    <th>Deadline</th>
-                    <th>Match Score</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for opp in opportunities %}
-                <tr>
-                    <td>{{ opp.title }}</td>
-                    <td>{{ opp.type }}</td>
-                    <td>{{ opp.organizer }}</td>
-                    <td>{{ opp.domains }}</td>
-                    <td>{{ opp.deadline or "N/A" }}</td>
-                    <td>{{ opp.match_score }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>No opportunities matched your profile yet.</p>
-    {% endif %}
+<!-- HEADER -->
+<div class="header">
+<h1><span>Verify</span>Ed Dashboard</h1>
+<p>Your personalized academic & career intelligence hub</p>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- PROFILE CARD -->
+<div class="glass profile">
+<div>
+<h2>Welcome, {{ student.name }}</h2>
+<p>
+Branch: <strong>{{ student.branch }}</strong> &nbsp;|&nbsp;
+Degree: <strong>{{ student.degree }}</strong> &nbsp;|&nbsp;
+Year: <strong>{{ student.year }}</strong>
+</p>
+</div>
+
+<div class="stats">
+<div class="stat">
+<h3>{{ opportunities|length }}</h3>
+<span>Matched Opportunities</span>
+</div>
+<div class="stat">
+<h3>AI</h3>
+<span>Powered Matching</span>
+</div>
+</div>
+</div>
+
+<!-- OPPORTUNITIES -->
+<div class="glass">
+<h3 class="section-title">Matched Opportunities</h3>
+
+{% if opportunities %}
+<div class="table-wrapper">
+<table>
+<thead>
+<tr>
+<th>Title</th>
+<th>Type</th>
+<th>Organizer</th>
+<th>Domains</th>
+<th>Deadline</th>
+<th>Match</th>
+</tr>
+</thead>
+<tbody>
+{% for opp in opportunities %}
+<tr>
+<td>{{ opp.title }}</td>
+<td>{{ opp.type }}</td>
+<td>{{ opp.organizer }}</td>
+<td>{{ opp.domains }}</td>
+<td>{{ opp.deadline or "N/A" }}</td>
+<td><span class="score">{{ opp.match_score }}%</span></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% else %}
+<div class="empty">
+🚀 No opportunities yet — update your skills to unlock more matches!
+</div>
+{% endif %}
+</div>
+
+<footer>
+© 2026 <span>VerifyEd</span>. Designed for ambitious students.
+</footer>
+
 </body>
 </html>

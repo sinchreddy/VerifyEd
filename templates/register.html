@@ -1,136 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Student Registration - VerifyEd</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<meta charset="UTF-8">
+<title>VerifyEd | Student Registration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+
+body{
+min-height:100vh;
+background:linear-gradient(135deg,#0a0a0a,#11141f,#1a1d2b);
+display:flex;
+flex-direction:column;
+align-items:center;
+padding:30px;
+color:#fff;
+}
+
+/* Header */
+header{font-size:48px;font-weight:700;margin-top:20px}
+header span{
+background:linear-gradient(135deg,#00c6ff,#0072ff);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+.subtitle{font-size:24px;color:#ccefff;margin-bottom:40px}
+
+/* Glass Card */
+.container{
+width:650px;
+padding:45px;
+border-radius:28px;
+background:rgba(255,255,255,0.07);
+backdrop-filter:blur(28px);
+border:1px solid rgba(255,255,255,0.15);
+box-shadow:0 40px 90px rgba(0,0,0,0.8);
+}
+
+h2{text-align:center;margin-bottom:35px;font-size:30px;color:#e0f7ff}
+
+.form-label{color:#ccefff;font-weight:500;margin-bottom:6px}
+
+.form-control,.form-select{
+width:100%;
+padding:14px 16px;
+border-radius:14px;
+background:rgba(255,255,255,0.1);
+border:1px solid rgba(255,255,255,0.25);
+color:#e0f7ff;
+outline:none;
+margin-bottom:18px;
+}
+.form-control::placeholder{color:rgba(255,255,255,0.5)}
+.form-control:focus,.form-select:focus{
+border-color:#00c6ff;
+background:rgba(255,255,255,0.15);
+}
+
+/* Tag Input */
+.tag-wrapper{position:relative;margin-bottom:18px}
+
+.tag-box{
+background:rgba(255,255,255,0.1);
+border:1px solid rgba(255,255,255,0.25);
+border-radius:14px;
+padding:10px;
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+}
+
+.tag-box input{
+background:transparent;
+border:none;
+color:#e0f7ff;
+outline:none;
+flex:1;
+min-width:140px;
+}
+
+.tag{
+background:linear-gradient(135deg,#00c6ff,#0072ff);
+padding:6px 10px;
+border-radius:10px;
+font-size:13px;
+display:flex;
+align-items:center;
+gap:6px;
+}
+.tag span{cursor:pointer;font-weight:bold}
+
+/* Suggestions */
+.suggestions{
+position:absolute;
+width:100%;
+background:#0f172a;
+border-radius:12px;
+margin-top:6px;
+overflow:hidden;
+z-index:10;
+display:none;
+}
+.suggestions div{
+padding:10px 14px;
+cursor:pointer;
+color:#ccefff;
+}
+.suggestions div:hover{
+background:#00c6ff;
+color:#000;
+}
+
+/* Button */
+button{
+width:100%;
+padding:16px;
+margin-top:15px;
+border:none;
+border-radius:18px;
+background:linear-gradient(135deg,#00c6ff,#0072ff);
+color:#fff;
+font-size:17px;
+font-weight:600;
+cursor:pointer;
+transition:.3s;
+}
+button:hover{
+transform:translateY(-2px);
+box-shadow:0 14px 35px rgba(0,0,0,.6);
+}
+
+/* Back to Login */
+.back-login{
+margin-top:18px;
+text-align:center;
+}
+.back-login a{
+color:#00c6ff;
+text-decoration:none;
+font-weight:500;
+transition:.3s;
+}
+.back-login a:hover{
+text-decoration:underline;
+color:#7ddcff;
+}
+
+/* Footer */
+footer{margin-top:40px;font-size:14px;opacity:.7}
+footer span{color:#00c6ff}
+</style>
 </head>
-<body class="bg-light">
 
-<div class="container mt-5">
-    <h2 class="mb-4">Student Registration</h2>
+<body>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-          </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+<header><span>Verify</span>Ed</header>
+<div class="subtitle">Dive Into VerifyEd</div>
 
-    <form method="POST">
+<div class="container">
+<h2>Student Registration</h2>
 
-        <!-- Name -->
-        <div class="mb-3">
-            <label class="form-label">Full Name</label>
-            <input type="text" name="name" class="form-control" required>
-        </div>
+<form method="POST">
 
-        <!-- Email -->
-        <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email" name="email" class="form-control" required>
-        </div>
+<label class="form-label">Full Name</label>
+<input type="text" class="form-control" placeholder="Enter your full name" required>
 
-        <!-- Degree Dropdown -->
-        <div class="mb-3">
-            <label class="form-label">Degree</label>
-            <select name="degree" class="form-select" required>
-                <option value="">Select Degree</option>
-                <option value="B.Tech">B.Tech</option>
-                <option value="M.Tech">M.Tech</option>
-                <option value="B.E">B.E</option>
-                <option value="B.Sc">B.Sc</option>
-                <option value="M.Sc">M.Sc</option>
-                <option value="PhD">PhD</option>
-                <option value="BCA">BCA</option>
-                <option value="MCA">MCA</option>
-                <option value="MBA">MBA</option>
-            </select>
-        </div>
+<label class="form-label">Email</label>
+<input type="email" class="form-control" placeholder="Enter your email" required>
 
-        <!-- Branch Dropdown -->
-        <div class="mb-3">
-        <label class="form-label">Degree</label>
-            <select name="branch" class="form-select" required>
-                <option value="">Select Branch</option>
-                <option value="Computer Science">Computer Science</option>
-                <option value="Information Technology">Information Technology</option>
-                <option value="Electronics and Communication">Electronics and Communication</option>
-                <option value="Electrical Engineering">Electrical Engineering</option>
-                <option value="Mechanical Engineering">Mechanical Engineering</option>
-                <option value="Civil Engineering">Civil Engineering</option>
-                <option value="Chemical Engineering">Chemical Engineering</option>
-                <option value="Biotechnology">Biotechnology</option>
-                <option value="Aerospace">Aerospace</option>
-                <option value="Physics">Physics</option>
-                <option value="Mathematics">Mathematics</option>
-                <option value="Data Science">Data Science</option>
-            </select>
-        </div>
+<label class="form-label">Degree</label>
+<select class="form-select" required>
+<option value="">Select Degree</option>
+<option>B.Tech</option><option>M.Tech</option><option>BCA</option>
+<option>MCA</option><option>MBA</option><option>B.Sc</option>
+<option>M.Sc</option><option>PhD</option>
+</select>
 
-        <!-- Year Dropdown -->
-        <div class="mb-3">
-        <label class="form-label">Degree</label>
-            <select name="year" class="form-select" required>
-                <option value="">Select Year</option>
-                <option value="1">1st Year</option>
-                <option value="2">2nd Year</option>
-                <option value="3">3rd Year</option>
-                <option value="4">4th Year</option>
-                <option value="5">5th Year</option>
-            </select>
-        </div>
+<label class="form-label">Branch</label>
+<select class="form-select" required>
+<option value="">Select Branch</option>
+<option>Computer Science</option>
+<option>Information Technology</option>
+<option>Data Science</option>
+<option>Electronics</option>
+<option>Mechanical</option>
+<option>Civil</option>
+</select>
 
-        <!-- Skills Multiple Select -->
-        <div class="mb-3">
-        <label class="form-label">Degree</label>
-            <select name="skills" class="form-select" multiple>
-                <option value="Python">Python</option>
-                <option value="Java">Java</option>
-                <option value="C++">C++</option>
-                <option value="C">C</option>
-                <option value="Web Development">Web Development</option>
-                <option value="Mobile App Development">Mobile App Development</option>
-                <option value="AI/ML">AI/ML</option>
-                <option value="Data Science">Data Science</option>
-                <option value="Networking">Networking</option>
-                <option value="Cybersecurity">Cybersecurity</option>
-                <option value="IoT">IoT</option>
-                <option value="Cloud Computing">Cloud Computing</option>
-                <option value="Blockchain">Blockchain</option>
-                <option value="Robotics">Robotics</option>
-                <option value="Embedded Systems">Embedded Systems</option>
-            </select>
-        </div>
+<label class="form-label">Year</label>
+<select class="form-select" required>
+<option value="">Select Year</option>
+<option>1st Year</option><option>2nd Year</option>
+<option>3rd Year</option><option>4th Year</option>
+</select>
 
-        <!-- Research Interests Multiple Select -->
-        <div class="mb-3">
-        <label class="form-label">Degree</label>
-            <select name="research_interests" class="form-select" multiple>
-                <option value="Machine Learning">Machine Learning</option>
-                <option value="Deep Learning">Deep Learning</option>
-                <option value="Data Science">Data Science</option>
-                <option value="Computer Vision">Computer Vision</option>
-                <option value="NLP">NLP</option>
-                <option value="Cybersecurity">Cybersecurity</option>
-                <option value="Networking">Networking</option>
-                <option value="IoT">IoT</option>
-                <option value="Cloud Computing">Cloud Computing</option>
-                <option value="Robotics">Robotics</option>
-                <option value="Embedded Systems">Embedded Systems</option>
-                <option value="Blockchain">Blockchain</option>
-                <option value="Quantum Computing">Quantum Computing</option>
-            </select>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Register</button>
-    </form>
+<!-- Skills -->
+<label class="form-label">Skills</label>
+<div class="tag-wrapper">
+<div class="tag-box" id="skillsBox">
+<input type="text" placeholder="Type or select skills">
+</div>
+<div class="suggestions" id="skillsSug"></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Research -->
+<label class="form-label">Research Interests</label>
+<div class="tag-wrapper">
+<div class="tag-box" id="researchBox">
+<input type="text" placeholder="Type or select interests">
+</div>
+<div class="suggestions" id="researchSug"></div>
+</div>
+
+<button type="submit">Register</button>
+
+<div class="back-login">
+<a href="login.html">← Go back to Login Page</a>
+</div>
+
+</form>
+</div>
+
+<footer>© 2026 <span>VerifyEd</span>. All rights reserved.</footer>
+
+<script>
+function tagInput(boxId,sugId,options){
+const box=document.getElementById(boxId);
+const input=box.querySelector('input');
+const sug=document.getElementById(sugId);
+let tags=[];
+
+input.oninput=()=>{
+sug.innerHTML='';
+const val=input.value.toLowerCase();
+if(!val){sug.style.display='none';return}
+options.filter(o=>o.toLowerCase().includes(val)&&!tags.includes(o))
+.slice(0,10).forEach(o=>{
+const div=document.createElement('div');
+div.textContent=o;
+div.onclick=()=>addTag(o);
+sug.appendChild(div);
+});
+sug.style.display='block';
+};
+
+input.onkeydown=e=>{
+if(e.key==='Enter'&&input.value.trim()){
+e.preventDefault();
+addTag(input.value.trim());
+}
+};
+
+function addTag(val){
+if(!tags.includes(val)){
+tags.push(val);
+render();
+}
+input.value='';
+sug.style.display='none';
+}
+
+function render(){
+box.querySelectorAll('.tag').forEach(t=>t.remove());
+tags.forEach(t=>{
+const el=document.createElement('div');
+el.className='tag';
+el.innerHTML=`${t} <span>&times;</span>`;
+el.querySelector('span').onclick=()=>{
+tags=tags.filter(x=>x!==t);
+render();
+};
+box.insertBefore(el,input);
+});
+}
+}
+
+/* SKILLS */
+tagInput("skillsBox","skillsSug",[
+"Python","Java","C","C++","JavaScript","TypeScript","Go","Rust",
+"HTML","CSS","React","Angular","Vue","Node.js","Django","Flask",
+"Machine Learning","Deep Learning","AI","Data Science",
+"AWS","Azure","Docker","Kubernetes","Linux",
+"Cybersecurity","Ethical Hacking","Networking",
+"MySQL","PostgreSQL","MongoDB",
+"Android Development","iOS Development","Flutter",
+"IoT","Robotics","Embedded Systems",
+"UI/UX Design","Figma","Graphic Design",
+"Project Management","Agile","Scrum"
+]);
+
+/* RESEARCH INTERESTS */
+tagInput("researchBox","researchSug",[
+"Machine Learning","Deep Learning","Generative AI",
+"Computer Vision","NLP","Reinforcement Learning",
+"Cybersecurity","Blockchain","Distributed Systems",
+"Cloud Computing","Edge Computing",
+"IoT","Smart Cities","Smart Healthcare",
+"Robotics","Autonomous Vehicles",
+"Quantum Computing","Quantum Cryptography",
+"Bioinformatics","Medical Imaging",
+"Human Computer Interaction","Software Engineering"
+]);
+</script>
+
 </body>
 </html>
