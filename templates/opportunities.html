@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Opportunities</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #4CAF50; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Hackathons & Conferences</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Organizer</th>
+                <th>Platform</th>
+                <th>Domains</th>
+                <th>Deadline</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for op in opportunities %}
+            <tr>
+                <td>{{ op.title }}</td>
+                <td>{{ op.type }}</td>
+                <td>{{ op.organizer }}</td>
+                <td>{{ op.platform }}</td>
+                <td>{{ op.domains }}</td>
+                <td>{{ op.deadline or 'N/A' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
