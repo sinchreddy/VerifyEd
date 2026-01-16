@@ -9,33 +9,53 @@
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background-color: #4CAF50; color: white; }
         tr:nth-child(even) { background-color: #f2f2f2; }
+        a {
+            color: #4CAF50;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <h1>Hackathons & Conferences</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Type</th>
-                <th>Organizer</th>
-                <th>Platform</th>
-                <th>Domains</th>
-                <th>Deadline</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for op in opportunities %}
-            <tr>
-                <td>{{ op.title }}</td>
-                <td>{{ op.type }}</td>
-                <td>{{ op.organizer }}</td>
-                <td>{{ op.platform }}</td>
-                <td>{{ op.domains }}</td>
-                <td>{{ op.deadline or 'N/A' }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+
+<h1>Hackathons & Conferences</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Organizer</th>
+            <th>Platform</th>
+            <th>Domains</th>
+            <th>Deadline</th>
+            <th>Link</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for op in opportunities %}
+        <tr>
+            <td>{{ op.title }}</td>
+            <td>{{ op.type }}</td>
+            <td>{{ op.organizer }}</td>
+            <td>{{ op.platform }}</td>
+            <td>{{ op.domains }}</td>
+            <td>{{ op.deadline or 'N/A' }}</td>
+            <td>
+                {% if op.link %}
+                    <a href="{{ op.link }}" target="_blank">Visit</a>
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 </body>
 </html>
