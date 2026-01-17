@@ -48,25 +48,31 @@ color:#b6e9ff;
 opacity:.9;
 }
 
-/* Top-right buttons */
-.header .actions{
+/* Logout Button */
+.header .logout{
 position:absolute;
 top:20px;
-right:30px;
-display:flex;
-gap:10px;
+right:20px;
+background:#ff4d4d;
+padding:8px 14px;
+border-radius:8px;
+color:#fff;
+text-decoration:none;
+font-weight:700;
 }
 
-.header .actions a{
-padding:8px 16px;
+/* Profile Button */
+.header .profile-btn{
+position:absolute;
+top:20px;
+right:120px;
+background:#00e0ff;
+padding:8px 14px;
 border-radius:8px;
+color:#000;
 text-decoration:none;
-font-weight:600;
-color:#fff;
-transition:0.3s;
+font-weight:700;
 }
-.header .actions .logout{background:#ff4d4d;}
-.header .actions .profile{background:#00bfff;}
 
 /* ===== GLASS CARD ===== */
 .glass{
@@ -148,6 +154,7 @@ background:linear-gradient(180deg,#00e0ff,#0072ff);
 /* ===== TABLE ===== */
 .table-wrapper{
 overflow-x:auto;
+margin-top:10px;
 }
 
 table{
@@ -197,6 +204,21 @@ color:#000;
 box-shadow:0 6px 18px rgba(0,0,0,.4);
 }
 
+/* ===== FILTERS ===== */
+.filters{
+margin-bottom:20px;
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+}
+
+.filters select{
+padding:6px 10px;
+border-radius:8px;
+border:none;
+font-weight:700;
+}
+
 /* ===== EMPTY STATE ===== */
 .empty{
 text-align:center;
@@ -219,7 +241,7 @@ footer span{color:#00e0ff}
 @media(max-width:768px){
 .profile{flex-direction:column;align-items:flex-start}
 .header h1{font-size:38px}
-.header .actions{position:static; margin-top:15px;}
+.header .logout, .header .profile-btn{position:static;margin-top:10px;}
 }
 </style>
 </head>
@@ -228,13 +250,11 @@ footer span{color:#00e0ff}
 
 <!-- HEADER -->
 <div class="header">
-<h1><span>Verify</span>Ed</h1>
-<p>Your academic & hackathon intelligence hub</p>
+<h1><span>Verify</span>Ed Dashboard</h1>
+<p>Your personalized academic & career intelligence hub</p>
 
-<div class="actions">
-  <a href="/" class="logout">Logout</a>
-  <a href="/profile/{{ student.student_id }}" class="profile">Profile</a>
-</div>
+<a href="/logout" class="logout">Logout</a>
+<a href="/profile/{{ student.student_id }}" class="profile-btn">Edit Profile</a>
 </div>
 
 <!-- PROFILE CARD -->
@@ -260,7 +280,31 @@ Year: <strong>{{ student.year }}</strong>
 </div>
 </div>
 
-<!-- OPPORTUNITIES TABS -->
+<!-- FILTERS -->
+<div class="glass">
+<h3 class="section-title">Filters</h3>
+<div class="filters">
+    <select id="typeFilter">
+        <option value="All">All Types</option>
+        <option value="Hackathon">Hackathon</option>
+        <option value="Conference">Conference</option>
+    </select>
+
+    <select id="domainFilter">
+        <option value="All">All Domains</option>
+        {% for domain in all_domains %}
+            <option value="{{ domain }}">{{ domain }}</option>
+        {% endfor %}
+    </select>
+
+    <select id="deadlineFilter">
+        <option value="All">All Deadlines</option>
+        <option value="Upcoming">Upcoming</option>
+    </select>
+</div>
+</div>
+
+<!-- OPPORTUNITIES TABLE -->
 <div class="glass">
 <h3 class="section-title">Matched Opportunities</h3>
 
@@ -289,11 +333,11 @@ Year: <strong>{{ student.year }}</strong>
 <td>{{ opp.domains }}</td>
 <td>{{ opp.deadline or "N/A" }}</td>
 <td>
-  {% if opp.link %}
-    <a href="{{ opp.link }}" target="_blank" style="color:#00e0ff;">Register</a>
-  {% else %}
-    N/A
-  {% endif %}
+{% if opp.link %}
+<a href="{{ opp.link }}" target="_blank" style="color:#00e0ff; text-decoration:underline;">Register</a>
+{% else %}
+N/A
+{% endif %}
 </td>
 <td><span class="score">{{ opp.match_score }}%</span></td>
 </tr>
@@ -311,6 +355,48 @@ Year: <strong>{{ student.year }}</strong>
 <footer>
 © 2026 <span>VerifyEd</span>. Designed for ambitious students.
 </footer>
+
+<!-- FILTER SCRIPT -->
+<script>
+const typeFilter = document.getElementById('typeFilter');
+const domainFilter = document.getElementById('domainFilter');
+const deadlineFilter = document.getElementById('deadlineFilter');
+
+[typeFilter, domainFilter, deadlineFilter].forEach(filter => {
+    filter.addEventListener('change', filterTable);
+});
+
+function filterTable() {
+    const typeValue = typeFilter.value;
+    const domainValue = domainFilter.value;
+    const deadlineValue = deadlineFilter.value;
+
+    const rows = document.querySelectorAll('table tbody tr');
+
+    rows.forEach(row => {
+        const type = row.cells[1].textContent.trim();
+        const domains = row.cells[4].textContent.trim();
+        const deadline = row.cells[5].textContent.trim();
+
+        let show = true;
+
+        if (typeValue !== 'All' && type !== typeValue) show = false;
+        if (domainValue !== 'All' && !domains.includes(domainValue)) show = false;
+
+        if (deadlineValue === 'Upcoming') {
+            if (deadline === 'N/A') {
+                show = false;
+            } else {
+                const today = new Date();
+                const d = new Date(deadline);
+                if (d < today) show = false;
+            }
+        }
+
+        row.style.display = show ? '' : 'none';
+    });
+}
+</script>
 
 </body>
 </html>
