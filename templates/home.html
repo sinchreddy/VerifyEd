@@ -185,29 +185,29 @@ body.add-mousemove .glass-card {
 <div class="brand"><span>Verify</span>Ed</div>
 
 <!-- Page heading -->
-<div class="page-heading">Dive Into VerifyEd</div>
+<div class="page-heading">Your personalized academic & career intelligence hub</div>
 
 <!-- Login Card -->
 <div class="glass-card" id="glass-card">
     <canvas id="ripple-canvas"></canvas>
     <h2>Sign In</h2>
 
-    <form>
+    <form method="POST" action="/">
         <div class="input-group">
             <label>Email</label>
-            <input type="email" placeholder="you@verifyed.com" required>
+            <input type="email" name="email" placeholder="you@verifyed.com" required>
         </div>
 
         <div class="input-group">
             <label>Password</label>
-            <input type="password" placeholder="••••••••" required>
+            <input type="password" name="password" placeholder="••••••••" required>
         </div>
 
-        <button class="login-btn">Login</button>
+        <button class="login-btn" type="submit">Login</button>
     </form>
 
     <div class="card-footer">
-        New to VerifyEd? <a href="#">Create account</a>
+        New to VerifyEd? <a href="/register">Create account</a>
     </div>
 </div>
 

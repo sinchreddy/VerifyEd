@@ -142,12 +142,8 @@ text-align:center;
 color:#00c6ff;
 text-decoration:none;
 font-weight:500;
-transition:.3s;
 }
-.back-login a:hover{
-text-decoration:underline;
-color:#7ddcff;
-}
+.back-login a:hover{text-decoration:underline}
 
 /* Footer */
 footer{margin-top:40px;font-size:14px;opacity:.7}
@@ -158,21 +154,24 @@ footer span{color:#00c6ff}
 <body>
 
 <header><span>Verify</span>Ed</header>
-<div class="subtitle">Dive Into VerifyEd</div>
+<div class="subtitle">Your personalized academic & career intelligence hub</div>
 
 <div class="container">
 <h2>Student Registration</h2>
 
-<form method="POST">
+<form method="POST" action="/register">
 
 <label class="form-label">Full Name</label>
-<input type="text" class="form-control" placeholder="Enter your full name" required>
+<input type="text" name="name" class="form-control" required>
 
 <label class="form-label">Email</label>
-<input type="email" class="form-control" placeholder="Enter your email" required>
+<input type="email" name="email" class="form-control" required>
+
+<label class="form-label">Password</label>
+<input type="password" name="password" class="form-control" required>
 
 <label class="form-label">Degree</label>
-<select class="form-select" required>
+<select name="degree" class="form-select" required>
 <option value="">Select Degree</option>
 <option>B.Tech</option><option>M.Tech</option><option>BCA</option>
 <option>MCA</option><option>MBA</option><option>B.Sc</option>
@@ -180,7 +179,7 @@ footer span{color:#00c6ff}
 </select>
 
 <label class="form-label">Branch</label>
-<select class="form-select" required>
+<select name="branch" class="form-select" required>
 <option value="">Select Branch</option>
 <option>Computer Science</option>
 <option>Information Technology</option>
@@ -191,7 +190,7 @@ footer span{color:#00c6ff}
 </select>
 
 <label class="form-label">Year</label>
-<select class="form-select" required>
+<select name="year" class="form-select" required>
 <option value="">Select Year</option>
 <option>1st Year</option><option>2nd Year</option>
 <option>3rd Year</option><option>4th Year</option>
@@ -215,10 +214,14 @@ footer span{color:#00c6ff}
 <div class="suggestions" id="researchSug"></div>
 </div>
 
+<!-- Hidden inputs -->
+<input type="hidden" name="skills" id="skillsInput">
+<input type="hidden" name="research_interests" id="researchInput">
+
 <button type="submit">Register</button>
 
 <div class="back-login">
-<a href="login.html">← Go back to Login Page</a>
+<a href="/">← Go back to Login Page</a>
 </div>
 
 </form>
@@ -227,58 +230,56 @@ footer span{color:#00c6ff}
 <footer>© 2026 <span>VerifyEd</span>. All rights reserved.</footer>
 
 <script>
-function tagInput(boxId,sugId,options){
+function tagInput(boxId,sugId,options,hiddenId){
 const box=document.getElementById(boxId);
-const input=box.querySelector('input');
+const input=box.querySelector("input");
 const sug=document.getElementById(sugId);
+const hidden=document.getElementById(hiddenId);
 let tags=[];
 
 input.oninput=()=>{
-sug.innerHTML='';
+sug.innerHTML="";
 const val=input.value.toLowerCase();
-if(!val){sug.style.display='none';return}
+if(!val){sug.style.display="none";return;}
 options.filter(o=>o.toLowerCase().includes(val)&&!tags.includes(o))
-.slice(0,10).forEach(o=>{
-const div=document.createElement('div');
+.forEach(o=>{
+const div=document.createElement("div");
 div.textContent=o;
 div.onclick=()=>addTag(o);
 sug.appendChild(div);
 });
-sug.style.display='block';
+sug.style.display="block";
 };
 
 input.onkeydown=e=>{
-if(e.key==='Enter'&&input.value.trim()){
+if(e.key==="Enter"&&input.value.trim()){
 e.preventDefault();
 addTag(input.value.trim());
 }
 };
 
 function addTag(val){
-if(!tags.includes(val)){
-tags.push(val);
-render();
-}
-input.value='';
-sug.style.display='none';
+if(!tags.includes(val)){tags.push(val);render();}
+input.value="";
+sug.style.display="none";
 }
 
 function render(){
-box.querySelectorAll('.tag').forEach(t=>t.remove());
+box.querySelectorAll(".tag").forEach(t=>t.remove());
 tags.forEach(t=>{
-const el=document.createElement('div');
-el.className='tag';
+const el=document.createElement("div");
+el.className="tag";
 el.innerHTML=`${t} <span>&times;</span>`;
-el.querySelector('span').onclick=()=>{
+el.querySelector("span").onclick=()=>{
 tags=tags.filter(x=>x!==t);
 render();
 };
 box.insertBefore(el,input);
 });
+hidden.value=tags.join(",");
 }
 }
 
-/* SKILLS */
 tagInput("skillsBox","skillsSug",[
 "Python","Java","C","C++","JavaScript","TypeScript","Go","Rust",
 "HTML","CSS","React","Angular","Vue","Node.js","Django","Flask",
@@ -290,9 +291,8 @@ tagInput("skillsBox","skillsSug",[
 "IoT","Robotics","Embedded Systems",
 "UI/UX Design","Figma","Graphic Design",
 "Project Management","Agile","Scrum"
-]);
+],"skillsInput");
 
-/* RESEARCH INTERESTS */
 tagInput("researchBox","researchSug",[
 "Machine Learning","Deep Learning","Generative AI",
 "Computer Vision","NLP","Reinforcement Learning",
@@ -303,7 +303,7 @@ tagInput("researchBox","researchSug",[
 "Quantum Computing","Quantum Cryptography",
 "Bioinformatics","Medical Imaging",
 "Human Computer Interaction","Software Engineering"
-]);
+],"researchInput");
 </script>
 
 </body>
